@@ -1,0 +1,27 @@
+version: '2'
+networks:
+  postgres:
+    driver: bridge
+services:
+  web:
+    build: .
+    depends_on:
+     - db
+    ports:
+     - "5000:5000"
+    volumes:
+     - .:/code
+    networks:
+      - postgres
+  db:
+    image: postgres:11.1
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=flask
+      - POSTGRES_PASSWORD=flask
+      - POSTGRES_DB=flask
+    ports:
+      - 54321:5432
+    networks:
+      - postgres
